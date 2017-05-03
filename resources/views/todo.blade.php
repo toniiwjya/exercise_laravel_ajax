@@ -10,9 +10,9 @@
 		<input type="button" id="submit" value="Go">
 	</form>
 	@if(count($data))
-	<ul>
+	<ul id="list">
 		@foreach($data as $data)
-			<li>{{ $data->nama }}</li>
+			<li id="todo{{$data->id}}">{{ $data->nama }} <input type="button" class="delete" id="{{$data->id}}" value="delete"></li>
 		@endforeach
 	</ul>
 	@endif
@@ -25,11 +25,24 @@ $(document).ready(function(){
 		$.ajax({
 			url		: 'todo',
 			method 	: 'post',
-			data	: {'nama':$('#nama').val()},
-			success : function(response) {
+			data	: {'nama':$('#nama').val(),'type':'INSERT'},
+			success : function(data) {
             	alert("Input Sukses !");
         	}
 		});
+	})
+
+	$('.delete').click(function(){
+		var id = $(this).attr('id');
+		$.ajax({
+			url		: 'todo',
+			method	: 'post',
+			data	: {'id':id,'type':'DELETE'},
+			success	: function(response){
+				alert("Delete Sukses !");
+				$("#todo"+id).remove();
+			}
+		})
 	})
 })
 </script>

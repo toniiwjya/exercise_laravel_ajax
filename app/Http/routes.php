@@ -19,6 +19,11 @@ Route::get('/todo', 'TodoController@index');
 
 Route::post('/todo', function()
 {
-	DB::update('INSERT INTO todo(nama) VALUES (?)',array($_POST['nama']));
+	if($_POST['type']=='INSERT'){
+		DB::update('INSERT INTO todos(nama) VALUES (?)',array($_POST['nama']));	
+	}
+	else if($_POST['type']=='DELETE'){
+		DB::delete('DELETE FROM todos where ID='.$_POST['id'].'');
+	}
 });
 
